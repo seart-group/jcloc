@@ -3,19 +3,19 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>ch.usi.si.seart</groupId>
-  <artifactId>template-maven</artifactId>
+  <artifactId>jcloc</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>${project.groupId}:${project.artifactId}</name>
   <description/>
-  <url>https://github.com/seart-group/template-maven</url>
+  <url>https://github.com/seart-group/jcloc</url>
   <inceptionYear/>
 
   <licenses>
     <license>
       <name>MIT License</name>
-      <url>https://raw.githubusercontent.com/seart-group/template-maven/master/LICENSE</url>
+      <url>https://raw.githubusercontent.com/seart-group/jcloc/master/LICENSE</url>
     </license>
   </licenses>
 
@@ -37,14 +37,14 @@
 
   <scm>
     <tag>HEAD</tag>
-    <url>https://github.com/seart-group/template-maven/tree/master</url>
-    <connection>scm:git:https://github.com/seart-group/template-maven.git</connection>
-    <developerConnection>scm:git:git@github.com:seart-group/template-maven.git</developerConnection>
+    <url>https://github.com/seart-group/jcloc/tree/master</url>
+    <connection>scm:git:https://github.com/seart-group/jcloc.git</connection>
+    <developerConnection>scm:git:git@github.com:seart-group/jcloc.git</developerConnection>
   </scm>
 
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/seart-group/template-maven/issues</url>
+    <url>https://github.com/seart-group/jcloc/issues</url>
   </issueManagement>
 
   <distributionManagement>
