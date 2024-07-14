@@ -93,6 +93,11 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>4.0.1</version>
+    </dependency>
+    <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
       <version>24.1.0</version>
