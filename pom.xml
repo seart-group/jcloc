@@ -111,10 +111,22 @@
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>cloc</directory>
+        <includes>
+          <include>cloc</include>
+        </includes>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
         <version>3.4.0</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.3.1</version>
       </plugin>
       <plugin>
         <artifactId>maven-enforcer-plugin</artifactId>

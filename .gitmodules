@@ -1,0 +1,3 @@
+[submodule "cloc"]
+	path = cloc
+	url = https://github.com/AlDanial/cloc.git
