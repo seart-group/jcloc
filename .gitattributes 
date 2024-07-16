@@ -1,1 +1,1 @@
-src/test/resources/** linguist-detectable=false
+src/test/resources/**/* linguist-detectable=false
