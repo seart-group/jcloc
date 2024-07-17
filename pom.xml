@@ -113,7 +113,7 @@
   <build>
     <resources>
       <resource>
-        <directory>cloc</directory>
+        <directory>${project.basedir}/cloc</directory>
         <includes>
           <include>cloc</include>
         </includes>
