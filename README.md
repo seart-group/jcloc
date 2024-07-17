@@ -28,10 +28,13 @@ Note that you do not need to have `cloc` installed on your system, as the JAR co
 import ch.usi.si.seart.cloc.CLOCCommand;
 import ch.usi.si.seart.cloc.CLOCException;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class Main {
 
     public static void main(String[] args) throws CLOCException {
-        Path path = Paths.get("path/to/target");
+        Path path = Paths.get("path", "to", "target");
         String result = CLOCCommand.targeting(path)
                 .byLanguage()
                 .toPrettyString();
