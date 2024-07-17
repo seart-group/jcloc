@@ -1,4 +1,19 @@
-# JCloc
+# JCloc &middot; [![MIT license](https://img.shields.io/github/license/seart-group/jcloc)](https://github.com/seart-group/jcloc/blob/master/LICENSE)
+
+Java wrapper for the [cloc](https://github.com/AlDanial/cloc) CLI tool. You can preview the library by including the
+following dependency in your Maven project:
+
+```xml
+<dependency>
+    <groupId>ch.usi.si.seart</groupId>
+    <artifactId>jcloc</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+</dependency>
+```
+
+> [!WARNING]  
+> This library is currently in an alpha stage and should not be used in production.
+> Until officially released, expect breaking changes to its APIs.
 
 ## Requirements
 
