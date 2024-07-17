@@ -3,6 +3,7 @@ package ch.usi.si.seart.cloc;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.codehaus.plexus.util.FileUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.io.TempDir;
@@ -21,6 +22,11 @@ class CLOCTest {
 
     @TempDir
     Path empty;
+
+    @BeforeEach
+    void setUp() {
+        CLOCCommand.setOutputMapper(null);
+    }
 
     @Test
     void testEmptyDirectory() throws CLOCException {
