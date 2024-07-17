@@ -7,15 +7,15 @@ package ch.usi.si.seart.cloc;
  */
 public class CLOCException extends Exception {
 
-    public CLOCException(String message) {
+    CLOCException(String message) {
         super(message);
     }
 
-    public CLOCException(Throwable cause) {
+    CLOCException(Throwable cause) {
         super(cause);
     }
 
-    public CLOCException(String message, Throwable cause) {
+    CLOCException(String message, Throwable cause) {
         super(message, cause);
     }
 }
