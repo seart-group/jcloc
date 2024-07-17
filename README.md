@@ -1,4 +1,4 @@
-# JCloc &middot; [![MIT license](https://img.shields.io/github/license/seart-group/jcloc)](https://github.com/seart-group/jcloc/blob/master/LICENSE)
+# jcloc &middot; [![MIT license](https://img.shields.io/github/license/seart-group/jcloc)](https://github.com/seart-group/jcloc/blob/master/LICENSE)
 
 Java wrapper for the [cloc](https://github.com/AlDanial/cloc) CLI tool. You can preview the library by including the
 following dependency in your Maven project:
