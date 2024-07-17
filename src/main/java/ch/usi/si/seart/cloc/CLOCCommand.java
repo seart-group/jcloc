@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.CommandLineUtils;
 import org.codehaus.plexus.util.cli.Commandline;
@@ -15,9 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 /**
@@ -75,12 +74,8 @@ public final class CLOCCommand {
                 try {
                     File tmpdir = new File(TMPDIR_PATH);
                     File script = new File(tmpdir, CMD);
-                    Files.copy(
-                        url.openStream(),
-                        script.toPath(),
-                        StandardCopyOption.COPY_ATTRIBUTES,
-                        StandardCopyOption.REPLACE_EXISTING
-                    );
+                    FileUtils.copyURLToFile(url, script);
+                    boolean ignore = script.setExecutable(true);
                     script.deleteOnExit();
                     return script.getAbsolutePath();
                 } catch (IOException ex) {
