@@ -189,6 +189,10 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.3.1</version>
+        <configuration>
+          <parallel>classes</parallel>
+          <threadCount>4</threadCount>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
