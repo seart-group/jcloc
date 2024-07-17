@@ -3,6 +3,7 @@ package ch.usi.si.seart.cloc;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.CommandLineUtils;
@@ -108,20 +109,23 @@ public final class CLOCCommand {
     /**
      * Count the physical lines of source code, reporting results by language.
      *
-     * @return A JSON representation of the command output.
+     * @return A JSON object representation of the command output.
      * @throws CLOCException if an error occurs while executing the command.
      */
-    public JsonNode byLanguage() throws CLOCException {
+    public ObjectNode byLanguage() throws CLOCException {
         try {
             StringStreamConsumer out = new StringStreamConsumer();
             StringStreamConsumer err = new StringStreamConsumer();
             int code = CommandLineUtils.executeCommandLine(commandline, out, err, timeout);
             if (code != 0) throw new CLOCException(err.getOutput());
-            return OUTPUT_MAPPER.readTree(out.getOutput());
+            JsonNode json = OUTPUT_MAPPER.readTree(out.getOutput());
+            return OUTPUT_MAPPER.convertValue(json, ObjectNode.class);
         } catch (JsonProcessingException ex) {
             throw new CLOCException(ex);
         } catch (CommandLineException ex) {
             throw new CLOCException(ex.getMessage(), ex.getCause());
+        } catch (IllegalArgumentException ex) {
+            throw new CLOCException("Unexpected output format!", ex);
         }
     }
 
