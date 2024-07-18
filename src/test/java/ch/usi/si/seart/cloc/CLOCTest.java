@@ -30,7 +30,7 @@ class CLOCTest {
 
     @Test
     void testEmptyDirectory() throws CLOCException {
-        JsonNode result = CLOCCommand.targeting(empty).byLanguage();
+        JsonNode result = CLOCCommand.create().targeting(empty).byLanguage();
         Assertions.assertNotNull(result);
         Assertions.assertTrue(result.isEmpty());
     }
@@ -38,20 +38,23 @@ class CLOCTest {
     @Test
     void testDirectoryNotExists() {
         Path invalid = RESOURCES.resolve("nonexistant");
-        Executable executable = () -> CLOCCommand.targeting(invalid);
+        CLOCCommand.Builder builder = CLOCCommand.create();
+        Executable executable = () -> builder.targeting(invalid);
         Assertions.assertThrows(IllegalArgumentException.class, executable);
     }
 
     @Test
     void testTimeout() {
         Path user = Paths.get(USER_HOME);
-        CLOCCommand command = CLOCCommand.targeting(user).withTimeout(1);
+        CLOCCommand command = CLOCCommand.create().withTimeout(1).targeting(user);
         Assertions.assertThrows(CLOCException.class, command::byLanguage);
     }
 
     @Test
     void testByLanguage() throws CLOCException, IOException {
-        JsonNode result = CLOCCommand.targeting(RESOURCES).byLanguage();
+        JsonNode result = CLOCCommand.create()
+                .targeting(RESOURCES)
+                .byLanguage();
         Assertions.assertNotNull(result);
         Assertions.assertFalse(result.isEmpty());
         Assertions.assertTrue(result.hasNonNull("header"));

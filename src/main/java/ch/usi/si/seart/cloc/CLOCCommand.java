@@ -35,9 +35,13 @@ public final class CLOCCommand {
     private static final JsonMapper DEFAULT_MAPPER = new JsonMapper();
     private static volatile JsonMapper OUTPUT_MAPPER = DEFAULT_MAPPER;
 
-    private final Commandline commandline = new Commandline();
+    private final Commandline commandline;
+    private final int timeout;
 
-    private int timeout = 0;
+    private CLOCCommand(Commandline commandline, int timeout) {
+        this.commandline = commandline;
+        this.timeout = timeout;
+    }
 
     /**
      * Set the {@link JsonMapper} to use for parsing the output of the command.
@@ -49,19 +53,12 @@ public final class CLOCCommand {
     }
 
     /**
-     * Create a new command instance targeting the specified path.
+     * Obtain a new {@link Builder Builder} for constructing a command.
      *
-     * @param path the path to target, must not be {@code null}.
-     * @return a new command instance targeting the specified path.
-     * @throws NullPointerException if the path is {@code null}.
-     * @throws IllegalArgumentException if the path does not exist.
+     * @return a new command builder
      */
-    @Contract("_ -> new")
-    public static @NotNull CLOCCommand targeting(@NotNull Path path) {
-        Objects.requireNonNull(path, "Path must not be null!");
-        File target = path.toFile();
-        if (!target.exists()) throw new IllegalArgumentException("Unable to read: " + path);
-        return new CLOCCommand(target);
+    public static Builder create() {
+        return new Builder();
     }
 
     private static String getBundledExecutable() {
@@ -86,25 +83,67 @@ public final class CLOCCommand {
         }
     }
 
-    private CLOCCommand(File target) {
-        commandline.setExecutable(EXECUTABLE);
-        commandline.createArg().setFile(target);
-        commandline.createArg().setValue("--json");
-        commandline.createArg().setValue("--quiet");
-    }
-
     /**
-     * Set the timeout for executing the command.
-     *
-     * @param timeout the timeout in seconds, or 0 for no timeout.
-     * @return this command instance.
-     * @throws IllegalArgumentException if the timeout is less than 0.
+     * Facilitates the construction of {@link CLOCCommand} instances.
+     * It allows for the step-by-step creation of these objects
+     * by providing methods for setting individual attributes.
+     * Input validations are performed at each build step.
      */
-    @Contract(value = "_ -> this")
-    public CLOCCommand withTimeout(int timeout) {
-        if (timeout < 0) throw new IllegalArgumentException("Timeout must be greater than or equal to 0!");
-        this.timeout = timeout;
-        return this;
+    public static final class Builder {
+
+        private int timeout = 0;
+        private int cores = 0;
+
+        /**
+         * Set the timeout for executing the command.
+         *
+         * @param timeout the timeout in seconds, or 0 for no timeout.
+         * @return this builder instance.
+         * @throws IllegalArgumentException if the timeout is less than 0.
+         */
+        @Contract(value = "_ -> this")
+        public Builder withTimeout(int timeout) {
+            if (timeout < 0) throw new IllegalArgumentException("Timeout must be greater than or equal to 0!");
+            this.timeout = timeout;
+            return this;
+        }
+
+        /**
+         * Set the number of cores to use for executing the command.
+         *
+         * @param cores the number of cores to use, or 0 to disable multiprocessing.
+         * @return this builder instance.
+         * @throws IllegalArgumentException if the number of cores is less than 0.
+         */
+        @Contract(value = "_ -> this")
+        public Builder usingCores(int cores) {
+            if (cores < 0) throw new IllegalArgumentException("Number of cores must be greater than or equal to 0!");
+            this.cores = cores;
+            return this;
+        }
+
+        /**
+         * Create a new command instance targeting the specified path.
+         *
+         * @param path the path to target, must not be {@code null}.
+         * @return a new command instance targeting the specified path.
+         * @throws NullPointerException if the path is {@code null}.
+         * @throws IllegalArgumentException if the path does not exist.
+         */
+        @Contract("_ -> new")
+        public @NotNull CLOCCommand targeting(@NotNull Path path) {
+            Objects.requireNonNull(path, "Path must not be null!");
+            File file = path.toFile();
+            if (!file.exists()) throw new IllegalArgumentException("Unable to read: " + path);
+
+            Commandline commandline = new Commandline();
+            commandline.setExecutable(EXECUTABLE);
+            commandline.createArg().setFile(file);
+            commandline.createArg().setValue("--json");
+            commandline.createArg().setValue("--quiet");
+            commandline.createArg().setValue("--processes=" + cores);
+            return new CLOCCommand(commandline, timeout);
+        }
     }
 
     /**

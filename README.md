@@ -35,7 +35,10 @@ public class Main {
 
     public static void main(String[] args) throws CLOCException {
         Path path = Paths.get("path", "to", "target");
-        String result = CLOCCommand.targeting(path)
+        String result = CLOCCommand.create()
+                .usingCores(4)
+                .withTimeout(60)
+                .targeting(path)
                 .byLanguage()
                 .toPrettyString();
         System.out.println(result);
