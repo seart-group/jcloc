@@ -92,6 +92,7 @@ public final class CLOCCommand {
     public static final class Builder {
 
         private int timeout = 0;
+        private int maxFileSize = 100;
         private int cores = 0;
 
         /**
@@ -123,6 +124,22 @@ public final class CLOCCommand {
         }
 
         /**
+         * Skip files exceeding the specified maximum size in megabytes. Default is 100 MB.
+         * <p>
+         * The underlying command needs approximately twenty times the largest file's size in memory.
+         * Processing files larger than 100 MB on a system with less than 2 GB of RAM may lead to issues.
+         *
+         * @param size the maximum file size in megabytes.
+         * @return this builder instance.
+         */
+        @Contract(value = "_ -> this")
+        public Builder withMaxFileSize(int size) {
+            if (size <= 0) throw new IllegalArgumentException("Maximum file size must be greater than 0!");
+            this.maxFileSize = size;
+            return this;
+        }
+
+        /**
          * Create a new command instance targeting the specified path.
          *
          * @param path the path to target, must not be {@code null}.
@@ -142,6 +159,7 @@ public final class CLOCCommand {
             commandLine.createArg().setValue("--json");
             commandLine.createArg().setValue("--quiet");
             commandLine.createArg().setValue("--processes=" + cores);
+            commandLine.createArg().setValue("--max-file-size=" + maxFileSize);
             return new CLOCCommand(commandLine, timeout);
         }
     }

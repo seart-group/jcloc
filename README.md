@@ -38,6 +38,7 @@ public class Main {
         String result = CLOCCommand.create()
                 .usingCores(4)
                 .withTimeout(60)
+                .withMaxFileSize(10)
                 .targeting(path)
                 .countByLanguage()
                 .toPrettyString();
