@@ -39,7 +39,7 @@ public class Main {
                 .usingCores(4)
                 .withTimeout(60)
                 .targeting(path)
-                .byLanguage()
+                .countByLanguage()
                 .toPrettyString();
         System.out.println(result);
     }

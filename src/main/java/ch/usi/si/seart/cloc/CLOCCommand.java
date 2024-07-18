@@ -35,11 +35,11 @@ public final class CLOCCommand {
     private static final JsonMapper DEFAULT_MAPPER = new JsonMapper();
     private static volatile JsonMapper OUTPUT_MAPPER = DEFAULT_MAPPER;
 
-    private final Commandline commandline;
+    private final CommandLine commandLine;
     private final int timeout;
 
-    private CLOCCommand(Commandline commandline, int timeout) {
-        this.commandline = commandline;
+    private CLOCCommand(CommandLine commandLine, int timeout) {
+        this.commandLine = commandLine;
         this.timeout = timeout;
     }
 
@@ -136,13 +136,13 @@ public final class CLOCCommand {
             File file = path.toFile();
             if (!file.exists()) throw new IllegalArgumentException("Unable to read: " + path);
 
-            Commandline commandline = new Commandline();
-            commandline.setExecutable(EXECUTABLE);
-            commandline.createArg().setFile(file);
-            commandline.createArg().setValue("--json");
-            commandline.createArg().setValue("--quiet");
-            commandline.createArg().setValue("--processes=" + cores);
-            return new CLOCCommand(commandline, timeout);
+            CommandLine commandLine = new CommandLine();
+            commandLine.setExecutable(EXECUTABLE);
+            commandLine.createArg().setFile(file);
+            commandLine.createArg().setValue("--json");
+            commandLine.createArg().setValue("--quiet");
+            commandLine.createArg().setValue("--processes=" + cores);
+            return new CLOCCommand(commandLine, timeout);
         }
     }
 
@@ -152,7 +152,41 @@ public final class CLOCCommand {
      * @return A JSON object representation of the command output.
      * @throws CLOCException if an error occurs while executing the command.
      */
-    public ObjectNode byLanguage() throws CLOCException {
+    public ObjectNode countByLanguage() throws CLOCException {
+        return execute(commandLine, timeout);
+    }
+
+    /**
+     * Count the physical lines of source code, reporting results by file.
+     *
+     * @return A JSON object representation of the command output.
+     * @throws CLOCException if an error occurs while executing the command.
+     */
+    public ObjectNode countByFile() throws CLOCException {
+        return execute(commandLine.withArgument("--by-file"), timeout);
+    }
+
+    /**
+     * Count the physical lines of source code, reporting results by file and language.
+     *
+     * @return A JSON object representation of the command output.
+     * @throws CLOCException if an error occurs while executing the command.
+     */
+    public ObjectNode countByFileAndLanguage() throws CLOCException {
+        return execute(commandLine.withArgument("--by-file-by-lang"), timeout);
+    }
+
+    /**
+     * Count the number of files, reporting results by language.
+     *
+     * @return A JSON object representation of the command output.
+     * @throws CLOCException if an error occurs while executing the command.
+     */
+    public ObjectNode countFiles() throws CLOCException {
+        return execute(commandLine.withArgument("--only-count-files"), timeout);
+    }
+
+    private static ObjectNode execute(Commandline commandline, int timeout) throws CLOCException {
         try {
             StringStreamConsumer out = new StringStreamConsumer();
             StringStreamConsumer err = new StringStreamConsumer();
@@ -166,6 +200,25 @@ public final class CLOCCommand {
             throw new CLOCException(ex.getMessage(), ex.getCause());
         } catch (IllegalArgumentException ex) {
             throw new CLOCException("Unexpected output format!", ex);
+        }
+    }
+
+    private static final class CommandLine extends Commandline {
+
+        /**
+         * Creates a copy of the original instance with the specified argument added to the end of the list.
+         *
+         * @param value the argument value to set.
+         * @return a copy of the current instance containing the specified argument.
+         */
+        @Contract("_ -> new")
+        public @NotNull CommandLine withArgument(String value) {
+            CommandLine copy = new CommandLine();
+            copy.setShell(getShell());
+            copy.setExecutable(getLiteralExecutable());
+            copy.addArguments(getArguments());
+            copy.createArg().setValue(value);
+            return copy;
         }
     }
 

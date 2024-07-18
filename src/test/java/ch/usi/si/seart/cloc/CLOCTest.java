@@ -30,7 +30,7 @@ class CLOCTest {
 
     @Test
     void testEmptyDirectory() throws CLOCException {
-        JsonNode result = CLOCCommand.create().targeting(empty).byLanguage();
+        JsonNode result = CLOCCommand.create().targeting(empty).countByLanguage();
         Assertions.assertNotNull(result);
         Assertions.assertTrue(result.isEmpty());
     }
@@ -47,14 +47,29 @@ class CLOCTest {
     void testTimeout() {
         Path user = Paths.get(USER_HOME);
         CLOCCommand command = CLOCCommand.create().withTimeout(1).targeting(user);
-        Assertions.assertThrows(CLOCException.class, command::byLanguage);
+        Assertions.assertThrows(CLOCException.class, command::countByLanguage);
     }
 
     @Test
-    void testByLanguage() throws CLOCException, IOException {
+    void testCountByLanguage() throws CLOCException, IOException {
         JsonNode result = CLOCCommand.create()
                 .targeting(RESOURCES)
-                .byLanguage();
+                .countByLanguage();
+        Assertions.assertNotNull(result);
+        Assertions.assertFalse(result.isEmpty());
+        Assertions.assertTrue(result.hasNonNull("header"));
+        Assertions.assertTrue(result.hasNonNull("SUM"));
+        JsonNode header = result.get("header");
+        List<File> files = FileUtils.getFiles(RESOURCES.toFile(), null, null);
+        Assertions.assertEquals(files.size(), header.get("n_files").asInt());
+        Assertions.assertEquals(files.size() + 2, result.size());
+    }
+
+    @Test
+    void testCountFiles() throws CLOCException, IOException {
+        JsonNode result = CLOCCommand.create()
+                .targeting(RESOURCES)
+                .countFiles();
         Assertions.assertNotNull(result);
         Assertions.assertFalse(result.isEmpty());
         Assertions.assertTrue(result.hasNonNull("header"));
