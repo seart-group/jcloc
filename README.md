@@ -7,7 +7,7 @@ following dependency in your Maven project:
 <dependency>
     <groupId>ch.usi.si.seart</groupId>
     <artifactId>jcloc</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>PREVIEW-SNAPSHOT</version>
 </dependency>
 ```
 
