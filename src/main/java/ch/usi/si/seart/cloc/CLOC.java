@@ -124,7 +124,7 @@ public final class CLOCCommand {
         }
 
         /**
-         * Skip files exceeding the specified maximum size in megabytes. Default is 100 MB.
+         * Skip files exceeding the specified maximum size in megabytes. Default is 100.
          * <p>
          * The underlying command needs approximately twenty times the largest file's size in memory.
          * Processing files larger than 100 MB on a system with less than 2 GB of RAM may lead to issues.
