@@ -135,18 +135,17 @@ public final class CLOC {
         }
 
         /**
-         * Skip files exceeding the specified maximum size in megabytes. Default is 100.
-         * <p>
-         * The underlying command needs approximately twenty times the largest file's size in memory.
-         * Processing files larger than 100 MB on a system with less than 2 GB of RAM may lead to issues.
+         * {@code cloc} considers docstrings to be comments, but this is not always correct as docstrings represent
+         * regular strings when they appear on the right hand side of an assignment or as function arguments. This
+         * switch controls whether docstrings should be treated as code.
          *
-         * @param value the maximum file size in megabytes.
+         * @param value whether docstrings should be treated as code.
          * @return this builder instance.
          */
         @Contract(value = "_ -> this")
-        public Builder maxFileSize(int value) {
-            if (value <= 0) throw new IllegalArgumentException("Maximum file size must be greater than 0!");
-            parameters.put("max-file-size", String.valueOf(value));
+        public Builder docstringAsCode(boolean value) {
+            Consumer<String> action = value ? flags::add : flags::remove;
+            action.accept("docstring-as-code");
             return this;
         }
 
@@ -161,6 +160,22 @@ public final class CLOC {
         public Builder followLinks(boolean value) {
             Consumer<String> action = value ? flags::add : flags::remove;
             action.accept("follow-links");
+            return this;
+        }
+
+        /**
+         * Skip files exceeding the specified maximum size in megabytes. Default is 100.
+         * <p>
+         * The underlying command needs approximately twenty times the largest file's size in memory.
+         * Processing files larger than 100 MB on a system with less than 2 GB of RAM may lead to issues.
+         *
+         * @param value the maximum file size in megabytes.
+         * @return this builder instance.
+         */
+        @Contract(value = "_ -> this")
+        public Builder maxFileSize(int value) {
+            if (value <= 0) throw new IllegalArgumentException("Maximum file size must be greater than 0!");
+            parameters.put("max-file-size", String.valueOf(value));
             return this;
         }
 
