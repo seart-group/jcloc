@@ -171,7 +171,7 @@ public final class CLOC {
      * @throws CLOCException if an error occurs while executing the command.
      */
     public ObjectNode linesByLanguage() throws CLOCException {
-        return execute(commandLine, timeout);
+        return execute(commandLine.clone(), timeout);
     }
 
     /**
@@ -223,6 +223,16 @@ public final class CLOC {
 
     private static final class CommandLine extends Commandline {
 
+        @Override
+        public CommandLine clone() {
+            CommandLine clone = new CommandLine();
+            clone.setShell(getShell());
+            clone.setExecutable(getLiteralExecutable());
+            clone.setWorkingDirectory(getWorkingDirectory());
+            clone.addArguments(getArguments());
+            return clone;
+        }
+
         /**
          * Creates a copy of the original instance with the specified argument added to the end of the argument list.
          *
@@ -231,13 +241,9 @@ public final class CLOC {
          */
         @Contract("_ -> new")
         public @NotNull CommandLine withArgument(String value) {
-            CommandLine copy = new CommandLine();
-            copy.setShell(getShell());
-            copy.setExecutable(getLiteralExecutable());
-            copy.setWorkingDirectory(getWorkingDirectory());
-            copy.addArguments(getArguments());
-            copy.createArg().setValue(value);
-            return copy;
+            CommandLine clone = clone();
+            clone.createArg().setValue(value);
+            return clone;
         }
     }
 
