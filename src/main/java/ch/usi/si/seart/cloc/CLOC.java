@@ -234,6 +234,7 @@ public final class CLOCCommand {
             CommandLine copy = new CommandLine();
             copy.setShell(getShell());
             copy.setExecutable(getLiteralExecutable());
+            copy.setWorkingDirectory(getWorkingDirectory());
             copy.addArguments(getArguments());
             copy.createArg().setValue(value);
             return copy;
