@@ -48,6 +48,41 @@ public class Main {
 
 For more usage examples, take a look at the [tests](src/test/java/ch/usi/si/seart/cloc).
 
+## Output
+
+Once the command has been built, you can execute it using one of the following methods:
+
+```jshelllanguage
+import ch.usi.si.seart.cloc.CLOC;
+
+CLOC cloc = CLOC.command().target(path);
+
+cloc.linesByLanguage();        // Count lines of code by language (default `cloc` behaviour)
+cloc.linesByFile();            // Count lines of code by file (equivalent to `cloc --by-file`)
+cloc.linesByFileAndLanguage(); // Count lines of code by file and language (equivalent to `cloc --by-file-by-lang`)
+cloc.countFiles();             // Count files by language (equivalent to `cloc --only-count-files`)
+```
+
+Results returned by all `cloc` command variants are parsed courtesy of [Jackson](https://github.com/FasterXML/jackson).
+Since all methods return an `ObjectNode`, you can easily convert results to a `String`, or map them to a custom POJO.
+
+You can also customize the command output mapper used by the library like so:
+
+```java
+import ch.usi.si.seart.cloc.CLOC;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+
+public class Main {
+
+    public static void main(String[] args) {
+        JsonMapper mapper = new JsonMapper();
+        // Customize the mapper here...
+        CLOC.setOutputMapper(mapper);
+        // Use the library as usual...
+    }
+}
+```
+
 ## FAQ
 
 ### How can I request a feature or ask a question?
