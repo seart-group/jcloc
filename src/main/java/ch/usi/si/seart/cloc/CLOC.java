@@ -208,6 +208,22 @@ public final class CLOC {
         }
 
         /**
+         * Skip the file uniqueness check.
+         * <p>
+         * This will give a performance boost at the expense of counting files with identical contents multiple times
+         * (if such duplicates exist).
+         *
+         * @param value whether to skip the file uniqueness check.
+         * @return this builder instance.
+         */
+        @Contract(value = "_ -> this")
+        public Builder skipUniqueness(boolean value) {
+            Consumer<String> action = value ? flags::add : flags::remove;
+            action.accept("skip-uniqueness");
+            return this;
+        }
+
+        /**
          * Create a new command instance targeting the specified path.
          *
          * @param path the path to target, must not be {@code null}.

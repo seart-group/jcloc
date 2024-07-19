@@ -53,13 +53,14 @@ The API currently maps only a subset of the `cloc` command-line options:
 ```jshelllanguage
 import ch.usi.si.seart.cloc.CLOC;
 
-CLOC.command()              // `cloc` equivalent:
-    .cores(4)               // --cores
-    .docstringAsCode(true)  // --docstring-as-code
-    .followLinks(true)      // --follow-links
-    .maxFileSize(10)        // --max-file-size
-    .noRecurse(false)       // --no-recurse
-    .readBinaryFiles(true); // --read-binary-files
+CLOC.command()             // `cloc` equivalent:
+    .cores(4)              // --cores
+    .docstringAsCode(true) // --docstring-as-code
+    .followLinks(true)     // --follow-links
+    .maxFileSize(10)       // --max-file-size
+    .noRecurse(true)       // --no-recurse
+    .readBinaryFiles(true) // --read-binary-files
+    .skipUniqueness(true); // --skip-uniqueness
 ```
 
 Support for other flags and parameters will be added as development progresses.
