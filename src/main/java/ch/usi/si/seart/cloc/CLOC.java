@@ -193,6 +193,21 @@ public final class CLOC {
         }
 
         /**
+         * Process binary files in addition to text files.
+         * <p>
+         * This is usually a bad idea and should only be attempted with text files that have embedded binary data.
+         *
+         * @param value whether to process binary files.
+         * @return this builder instance.
+         */
+        @Contract(value = "_ -> this")
+        public Builder readBinaryFiles(boolean value) {
+            Consumer<String> action = value ? flags::add : flags::remove;
+            action.accept("read-binary-files");
+            return this;
+        }
+
+        /**
          * Create a new command instance targeting the specified path.
          *
          * @param path the path to target, must not be {@code null}.
