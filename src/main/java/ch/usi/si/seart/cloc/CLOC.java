@@ -17,7 +17,13 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Counts blank lines, comment lines, and physical lines of source code in many programming languages.
@@ -92,8 +98,11 @@ public final class CLOC {
     public static final class Builder {
 
         private int timeout = 0;
-        private int maxFileSize = 100;
-        private int cores = 0;
+
+        private final Set<String> flags = Stream.of("json", "quiet")
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        private final Map<String, String> parameters = new LinkedHashMap<>();
 
         /**
          * Set the timeout for executing the command.
@@ -119,7 +128,8 @@ public final class CLOC {
         @Contract(value = "_ -> this")
         public Builder cores(int value) {
             if (value < 0) throw new IllegalArgumentException("Number of cores must be greater than or equal to 0!");
-            cores = value;
+            if (value > 1) parameters.put("processes", String.valueOf(value));
+            else parameters.remove("processes");
             return this;
         }
 
@@ -135,7 +145,7 @@ public final class CLOC {
         @Contract(value = "_ -> this")
         public Builder maxFileSize(int value) {
             if (value <= 0) throw new IllegalArgumentException("Maximum file size must be greater than 0!");
-            maxFileSize = value;
+            parameters.put("max-file-size", String.valueOf(value));
             return this;
         }
 
@@ -156,10 +166,12 @@ public final class CLOC {
             CommandLine commandLine = new CommandLine();
             commandLine.setExecutable(EXECUTABLE);
             commandLine.createArg().setFile(file);
-            commandLine.createArg().setValue("--json");
-            commandLine.createArg().setValue("--quiet");
-            commandLine.createArg().setValue("--processes=" + cores);
-            commandLine.createArg().setValue("--max-file-size=" + maxFileSize);
+            flags.stream()
+                    .map(flag -> "--" + flag)
+                    .forEach(commandLine::createArg);
+            parameters.entrySet().stream()
+                    .map(entry -> "--" + entry.getKey() + "=" + entry.getValue())
+                    .forEach(commandLine::createArg);
             return new CLOC(commandLine, timeout);
         }
     }
