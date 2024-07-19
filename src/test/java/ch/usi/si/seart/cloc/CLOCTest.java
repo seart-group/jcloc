@@ -25,12 +25,12 @@ class CLOCTest {
 
     @BeforeEach
     void setUp() {
-        CLOCCommand.setOutputMapper(null);
+        CLOC.setOutputMapper(null);
     }
 
     @Test
     void testEmptyDirectory() throws CLOCException {
-        JsonNode result = CLOCCommand.create().targeting(empty).countByLanguage();
+        JsonNode result = CLOC.command().target(empty).countByLanguage();
         Assertions.assertNotNull(result);
         Assertions.assertTrue(result.isEmpty());
     }
@@ -38,22 +38,22 @@ class CLOCTest {
     @Test
     void testDirectoryNotExists() {
         Path invalid = RESOURCES.resolve("nonexistant");
-        CLOCCommand.Builder builder = CLOCCommand.create();
-        Executable executable = () -> builder.targeting(invalid);
+        CLOC.Builder builder = CLOC.command();
+        Executable executable = () -> builder.target(invalid);
         Assertions.assertThrows(IllegalArgumentException.class, executable);
     }
 
     @Test
     void testTimeout() {
         Path user = Paths.get(USER_HOME);
-        CLOCCommand command = CLOCCommand.create().withTimeout(1).targeting(user);
+        CLOC command = CLOC.command().timeout(1).target(user);
         Assertions.assertThrows(CLOCException.class, command::countByLanguage);
     }
 
     @Test
     void testCountByLanguage() throws CLOCException, IOException {
-        JsonNode result = CLOCCommand.create()
-                .targeting(RESOURCES)
+        JsonNode result = CLOC.command()
+                .target(RESOURCES)
                 .countByLanguage();
         Assertions.assertNotNull(result);
         Assertions.assertFalse(result.isEmpty());
@@ -67,8 +67,8 @@ class CLOCTest {
 
     @Test
     void testCountFiles() throws CLOCException, IOException {
-        JsonNode result = CLOCCommand.create()
-                .targeting(RESOURCES)
+        JsonNode result = CLOC.command()
+                .target(RESOURCES)
                 .countFiles();
         Assertions.assertNotNull(result);
         Assertions.assertFalse(result.isEmpty());

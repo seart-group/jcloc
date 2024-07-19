@@ -21,10 +21,10 @@ This library requires a minimum of Java 8. You do not need to have `cloc` instal
 bundled with the necessary executable. Said script should be executable out of the box on most Unix-like systems (as
 it is written in Perl, which is available on the aforementioned systems by default).
 
-## Examples
+## Usage
 
 ```java
-import ch.usi.si.seart.cloc.CLOCCommand;
+import ch.usi.si.seart.cloc.CLOC;
 import ch.usi.si.seart.cloc.CLOCException;
 
 import java.nio.file.Path;
@@ -34,11 +34,11 @@ public class Main {
 
     public static void main(String[] args) throws CLOCException {
         Path path = Paths.get("path", "to", "target");
-        String result = CLOCCommand.create()
-                .usingCores(4)
-                .withTimeout(60)
-                .withMaxFileSize(10)
-                .targeting(path)
+        String result = CLOC.command()
+                .cores(4)
+                .timeout(60)
+                .maxFileSize(10)
+                .target(path)
                 .countByLanguage()
                 .toPrettyString();
         System.out.println(result);

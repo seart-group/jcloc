@@ -24,7 +24,7 @@ import java.util.Objects;
  *
  * @author Ozren Dabić
  */
-public final class CLOCCommand {
+public final class CLOC {
 
     private static final String CMD = "cloc";
 
@@ -38,7 +38,7 @@ public final class CLOCCommand {
     private final CommandLine commandLine;
     private final int timeout;
 
-    private CLOCCommand(CommandLine commandLine, int timeout) {
+    private CLOC(CommandLine commandLine, int timeout) {
         this.commandLine = commandLine;
         this.timeout = timeout;
     }
@@ -57,12 +57,12 @@ public final class CLOCCommand {
      *
      * @return a new command builder
      */
-    public static Builder create() {
+    public static Builder command() {
         return new Builder();
     }
 
     private static String getBundledExecutable() {
-        URL url = CLOCCommand.class.getClassLoader().getResource(CMD);
+        URL url = CLOC.class.getClassLoader().getResource(CMD);
         String protocol = Objects.requireNonNull(url).getProtocol();
         switch (protocol) {
             case "file":
@@ -84,7 +84,7 @@ public final class CLOCCommand {
     }
 
     /**
-     * Facilitates the construction of {@link CLOCCommand} instances.
+     * Facilitates the construction of {@link CLOC} command instances.
      * It allows for the step-by-step creation of these objects
      * by providing methods for setting individual attributes.
      * Input validations are performed at each build step.
@@ -98,28 +98,28 @@ public final class CLOCCommand {
         /**
          * Set the timeout for executing the command.
          *
-         * @param timeout the timeout in seconds, or 0 for no timeout.
+         * @param value the timeout in seconds, or 0 for no timeout.
          * @return this builder instance.
          * @throws IllegalArgumentException if the timeout is less than 0.
          */
         @Contract(value = "_ -> this")
-        public Builder withTimeout(int timeout) {
-            if (timeout < 0) throw new IllegalArgumentException("Timeout must be greater than or equal to 0!");
-            this.timeout = timeout;
+        public Builder timeout(int value) {
+            if (value < 0) throw new IllegalArgumentException("Timeout must be greater than or equal to 0!");
+            timeout = value;
             return this;
         }
 
         /**
          * Set the number of cores to use for executing the command.
          *
-         * @param cores the number of cores to use, or 0 to disable multiprocessing.
+         * @param value the number of cores to use, or 0 to disable multiprocessing.
          * @return this builder instance.
          * @throws IllegalArgumentException if the number of cores is less than 0.
          */
         @Contract(value = "_ -> this")
-        public Builder usingCores(int cores) {
-            if (cores < 0) throw new IllegalArgumentException("Number of cores must be greater than or equal to 0!");
-            this.cores = cores;
+        public Builder cores(int value) {
+            if (value < 0) throw new IllegalArgumentException("Number of cores must be greater than or equal to 0!");
+            cores = value;
             return this;
         }
 
@@ -129,13 +129,13 @@ public final class CLOCCommand {
          * The underlying command needs approximately twenty times the largest file's size in memory.
          * Processing files larger than 100 MB on a system with less than 2 GB of RAM may lead to issues.
          *
-         * @param size the maximum file size in megabytes.
+         * @param value the maximum file size in megabytes.
          * @return this builder instance.
          */
         @Contract(value = "_ -> this")
-        public Builder withMaxFileSize(int size) {
-            if (size <= 0) throw new IllegalArgumentException("Maximum file size must be greater than 0!");
-            this.maxFileSize = size;
+        public Builder maxFileSize(int value) {
+            if (value <= 0) throw new IllegalArgumentException("Maximum file size must be greater than 0!");
+            maxFileSize = value;
             return this;
         }
 
@@ -148,7 +148,7 @@ public final class CLOCCommand {
          * @throws IllegalArgumentException if the path does not exist.
          */
         @Contract("_ -> new")
-        public @NotNull CLOCCommand targeting(@NotNull Path path) {
+        public @NotNull CLOC target(@NotNull Path path) {
             Objects.requireNonNull(path, "Path must not be null!");
             File file = path.toFile();
             if (!file.exists()) throw new IllegalArgumentException("Unable to read: " + path);
@@ -160,7 +160,7 @@ public final class CLOCCommand {
             commandLine.createArg().setValue("--quiet");
             commandLine.createArg().setValue("--processes=" + cores);
             commandLine.createArg().setValue("--max-file-size=" + maxFileSize);
-            return new CLOCCommand(commandLine, timeout);
+            return new CLOC(commandLine, timeout);
         }
     }
 
