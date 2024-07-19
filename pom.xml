@@ -61,7 +61,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>8</java.version>
-    <com.puppycrawl.tools.checkstyle.version>10.17.0</com.puppycrawl.tools.checkstyle.version>
     <org.codehaus.plexus.version>4.0.1</org.codehaus.plexus.version>
     <org.jetbrains.annotations.version>24.1.0</org.jetbrains.annotations.version>
     <org.junit.version>5.10.3</org.junit.version>
@@ -234,17 +233,9 @@
           <tagNameFormat>v@{project.version}</tagNameFormat>
         </configuration>
       </plugin>
-
       <plugin>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.4.0</version>
-        <dependencies>
-          <dependency>
-            <groupId>com.puppycrawl.tools</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>${com.puppycrawl.tools.checkstyle.version}</version>
-          </dependency>
-        </dependencies>
         <executions>
           <execution>
             <phase>validate</phase>
