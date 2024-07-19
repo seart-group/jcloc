@@ -224,9 +224,9 @@ public final class CLOCCommand {
     private static final class CommandLine extends Commandline {
 
         /**
-         * Creates a copy of the original instance with the specified argument added to the end of the list.
+         * Creates a copy of the original instance with the specified argument added to the end of the argument list.
          *
-         * @param value the argument value to set.
+         * @param value the value of the argument to add.
          * @return a copy of the current instance containing the specified argument.
          */
         @Contract("_ -> new")
