@@ -53,9 +53,10 @@ The API currently maps only a subset of the `cloc` command-line options:
 ```jshelllanguage
 import ch.usi.si.seart.cloc.CLOC;
 
-CLOC.command()        // Equivalent to `cloc`:
-    .cores(4)         // --cores
-    .maxFileSize(10); // --max-file-size
+CLOC.command()          // Equivalent to `cloc`:
+    .cores(4)           // --cores
+    .maxFileSize(10)    // --max-file-size
+    .followLinks(true); // --follow-links
 ```
 
 Support for other flags and parameters will be added as development progresses.

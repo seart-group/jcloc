@@ -22,6 +22,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -146,6 +147,20 @@ public final class CLOC {
         public Builder maxFileSize(int value) {
             if (value <= 0) throw new IllegalArgumentException("Maximum file size must be greater than 0!");
             parameters.put("max-file-size", String.valueOf(value));
+            return this;
+        }
+
+        /**
+         * Follow symbolic links to directories. Symbolic links to files are always followed. Only applies to Unix-like
+         * systems.
+         *
+         * @param value whether symbolic links should be followed.
+         * @return this builder instance.
+         */
+        @Contract(value = "_ -> this")
+        public Builder followLinks(boolean value) {
+            Consumer<String> action = value ? flags::add : flags::remove;
+            action.accept("follow-links");
             return this;
         }
 
