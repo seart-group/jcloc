@@ -170,7 +170,7 @@ public final class CLOC {
      * @return A JSON object representation of the command output.
      * @throws CLOCException if an error occurs while executing the command.
      */
-    public ObjectNode countByLanguage() throws CLOCException {
+    public ObjectNode linesByLanguage() throws CLOCException {
         return execute(commandLine, timeout);
     }
 
@@ -180,7 +180,7 @@ public final class CLOC {
      * @return A JSON object representation of the command output.
      * @throws CLOCException if an error occurs while executing the command.
      */
-    public ObjectNode countByFile() throws CLOCException {
+    public ObjectNode linesByFile() throws CLOCException {
         return execute(commandLine.withArgument("--by-file"), timeout);
     }
 
@@ -190,7 +190,7 @@ public final class CLOC {
      * @return A JSON object representation of the command output.
      * @throws CLOCException if an error occurs while executing the command.
      */
-    public ObjectNode countByFileAndLanguage() throws CLOCException {
+    public ObjectNode linesByFileAndLanguage() throws CLOCException {
         return execute(commandLine.withArgument("--by-file-by-lang"), timeout);
     }
 

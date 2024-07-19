@@ -30,7 +30,7 @@ class CLOCTest {
 
     @Test
     void testEmptyDirectory() throws CLOCException {
-        JsonNode result = CLOC.command().target(empty).countByLanguage();
+        JsonNode result = CLOC.command().target(empty).linesByLanguage();
         Assertions.assertNotNull(result);
         Assertions.assertTrue(result.isEmpty());
     }
@@ -47,14 +47,14 @@ class CLOCTest {
     void testTimeout() {
         Path user = Paths.get(USER_HOME);
         CLOC command = CLOC.command().timeout(1).target(user);
-        Assertions.assertThrows(CLOCException.class, command::countByLanguage);
+        Assertions.assertThrows(CLOCException.class, command::linesByLanguage);
     }
 
     @Test
-    void testCountByLanguage() throws CLOCException, IOException {
+    void testLinesByLanguage() throws CLOCException, IOException {
         JsonNode result = CLOC.command()
                 .target(RESOURCES)
-                .countByLanguage();
+                .linesByLanguage();
         Assertions.assertNotNull(result);
         Assertions.assertFalse(result.isEmpty());
         Assertions.assertTrue(result.hasNonNull("header"));

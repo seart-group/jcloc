@@ -39,7 +39,7 @@ public class Main {
                 .timeout(60)
                 .maxFileSize(10)
                 .target(path)
-                .countByLanguage()
+                .linesByLanguage()
                 .toPrettyString();
         System.out.println(result);
     }
