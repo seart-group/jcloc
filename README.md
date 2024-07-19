@@ -57,7 +57,8 @@ CLOC.command()             // `cloc` equivalent:
     .cores(4)              // --cores
     .docstringAsCode(true) // --docstring-as-code
     .followLinks(true)     // --follow-links
-    .maxFileSize(10);      // --max-file-size
+    .maxFileSize(10)       // --max-file-size
+    .noRecurse(false);     // --no-recurse
 ```
 
 Support for other flags and parameters will be added as development progresses.

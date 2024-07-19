@@ -180,6 +180,19 @@ public final class CLOC {
         }
 
         /**
+         * Count files in the given directories without recursively descending into their subdirectories.
+         *
+         * @param value whether to prevent recursion into subdirectories.
+         * @return this builder instance.
+         */
+        @Contract(value = "_ -> this")
+        public Builder noRecurse(boolean value) {
+            Consumer<String> action = value ? flags::add : flags::remove;
+            action.accept("no-recurse");
+            return this;
+        }
+
+        /**
          * Create a new command instance targeting the specified path.
          *
          * @param path the path to target, must not be {@code null}.
