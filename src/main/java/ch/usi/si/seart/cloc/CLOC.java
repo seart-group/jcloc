@@ -242,8 +242,18 @@ public final class CLOC {
         @Contract("_ -> new")
         public @NotNull CommandLine withArgument(String value) {
             CommandLine clone = clone();
-            clone.createArg().setValue(value);
+            clone.createArg(value);
             return clone;
+        }
+
+
+        /**
+         * Creates an argument object and sets its value.
+         *
+         * @param value the value of the argument to add.
+         */
+        public void createArg(String value) {
+            createArg().setValue(value);
         }
     }
 
