@@ -230,7 +230,12 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>3.1.1</version>
         <configuration>
+          <releaseProfiles>release</releaseProfiles>
+          <preparationProfiles>release</preparationProfiles>
           <tagNameFormat>v@{project.version}</tagNameFormat>
+          <preparationGoals>
+            resources:copy-resources@default-generate-docs scm:add -Dincludes=README.md
+          </preparationGoals>
         </configuration>
       </plugin>
       <plugin>
