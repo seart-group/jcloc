@@ -77,9 +77,9 @@ cloc.countFiles();             // Count files by language (equivalent to `cloc -
 ```
 
 Results returned by all `cloc` command variants are parsed courtesy of [Jackson](https://github.com/FasterXML/jackson).
-Since all methods return an `ObjectNode`, you can easily convert results to a `String`, or map them to a custom POJO.
+Since all methods return an `ObjectNode`, you can convert results to a `String`, or map them to a custom POJO.
 
-You can also customize the command output mapper used by the library like so:
+You can also customise the command output mapper used by the library like so:
 
 ```java
 import ch.usi.si.seart.cloc.CLOC;
