@@ -30,11 +30,8 @@ jobs:
           java-version: 8
           distribution: zulu
           cache: maven
-          gpg-private-key: ${{ secrets.GPG_PRIVATEKEY }}
       - name: Run Tests
-        run: mvn --batch-mode --update-snapshots verify
-        env:
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: mvn --batch-mode --update-snapshots verify -Dgpg.skip
   deploy:
     name: Deploy Snapshot
     needs: test
