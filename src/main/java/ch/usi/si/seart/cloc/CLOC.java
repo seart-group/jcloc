@@ -71,8 +71,7 @@ public final class CLOC {
 
     private static String getBundledExecutable() {
         String extension = SystemUtils.IS_OS_WINDOWS ? "exe" : "pl";
-        String filename = String.format("%s.%s", CMD, extension);
-        URL url = CLOC.class.getClassLoader().getResource(filename);
+        URL url = CLOC.class.getClassLoader().getResource(CMD + "." + extension);
         String protocol = Objects.requireNonNull(url).getProtocol();
         switch (protocol) {
             case "file":
