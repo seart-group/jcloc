@@ -36,9 +36,8 @@ jobs:
             name: Linux
           - os: macos-latest
             name: macOS
-          # TODO: Uncomment when Windows is supported
-          # - os: windows-latest
-          #   name: Windows
+          - os: windows-latest
+            name: Windows
     steps:
       - name: Checkout latest
         uses: actions/checkout@v4
