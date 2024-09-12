@@ -61,6 +61,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>8</java.version>
     <cloc.version>2.02</cloc.version>
+    <cloc.url>https://github.com/AlDanial/cloc</cloc.url>
     <org.codehaus.plexus.version>4.0.1</org.codehaus.plexus.version>
     <org.jetbrains.annotations.version>24.1.0</org.jetbrains.annotations.version>
     <org.junit.version>5.11.0</org.junit.version>
@@ -271,6 +272,39 @@
               <generateGitPropertiesFilename>
                 ${project.build.outputDirectory}/git.properties
               </generateGitPropertiesFilename>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>default-download-executables</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <exec executable="curl">
+                  <arg value="-s"/>
+                  <arg value="-L"/>
+                  <arg value="${cloc.url}/releases/download/v${cloc.version}/cloc-${cloc.version}.exe"/>
+                  <arg value="-o"/>
+                  <arg value="${project.build.outputDirectory}/cloc.exe"/>
+                  <arg value="-L"/>
+                  <arg value="${cloc.url}/releases/download/v${cloc.version}/cloc-${cloc.version}.pl"/>
+                  <arg value="-o"/>
+                  <arg value="${project.build.outputDirectory}/cloc.pl"/>
+                </exec>
+                <exec executable="chmod">
+                  <arg value="+x"/>
+                  <arg value="${project.build.outputDirectory}/cloc.exe"/>
+                  <arg value="${project.build.outputDirectory}/cloc.pl"/>
+                </exec>
+              </target>
             </configuration>
           </execution>
         </executions>
