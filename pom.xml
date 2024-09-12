@@ -286,21 +286,21 @@
             </goals>
             <configuration>
               <target>
-                <exec executable="curl">
+                <exec executable="curl" dir="${project.build.outputDirectory}">
                   <arg value="-s"/>
                   <arg value="-L"/>
                   <arg value="${cloc.url}/releases/download/v${cloc.version}/cloc-${cloc.version}.exe"/>
                   <arg value="-o"/>
-                  <arg value="${project.build.outputDirectory}/cloc.exe"/>
+                  <arg value="cloc.exe"/>
                   <arg value="-L"/>
                   <arg value="${cloc.url}/releases/download/v${cloc.version}/cloc-${cloc.version}.pl"/>
                   <arg value="-o"/>
-                  <arg value="${project.build.outputDirectory}/cloc.pl"/>
+                  <arg value="cloc.pl"/>
                 </exec>
-                <exec executable="chmod">
+                <exec executable="chmod" dir="${project.build.outputDirectory}">
                   <arg value="+x"/>
-                  <arg value="${project.build.outputDirectory}/cloc.exe"/>
-                  <arg value="${project.build.outputDirectory}/cloc.pl"/>
+                  <arg value="cloc.exe"/>
+                  <arg value="cloc.pl"/>
                 </exec>
               </target>
             </configuration>
