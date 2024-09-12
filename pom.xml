@@ -116,14 +116,6 @@
   </dependencies>
 
   <build>
-    <resources>
-      <resource>
-        <directory>${project.basedir}/cloc</directory>
-        <includes>
-          <include>cloc</include>
-        </includes>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
