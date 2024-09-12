@@ -22,8 +22,6 @@ jobs:
     steps:
       - name: Checkout latest
         uses: actions/checkout@v4
-        with:
-          submodules: true
       - name: Set up JDK 8
         uses: actions/setup-java@v4
         with:
@@ -40,8 +38,6 @@ jobs:
     steps:
       - name: Checkout latest
         uses: actions/checkout@v4
-        with:
-          submodules: true
       - name: Set up JDK 8
         uses: actions/setup-java@v4
         with:
