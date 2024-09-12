@@ -27,5 +27,8 @@ jobs:
           java-version: 8
           distribution: temurin
           cache: maven
+          gpg-private-key: ${{ secrets.GPG_PRIVATEKEY }}
       - name: Run Tests
         run: mvn --batch-mode --update-snapshots verify
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
