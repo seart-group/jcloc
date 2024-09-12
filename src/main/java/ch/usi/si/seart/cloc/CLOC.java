@@ -249,10 +249,6 @@ public final class CLOC {
             parameters.entrySet().stream()
                     .map(entry -> "--" + entry.getKey() + "=" + entry.getValue())
                     .forEach(commandLine::createArg);
-
-            // FIXME: Remove
-            System.out.println(EXECUTABLE);
-
             return new CLOC(commandLine, timeout);
         }
     }
