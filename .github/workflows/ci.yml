@@ -48,7 +48,7 @@ jobs:
           distribution: zulu
           cache: maven
       - name: Run Tests
-        run: mvn --batch-mode --update-snapshots verify -Dgpg.skip
+        run: mvn --batch-mode --update-snapshots verify -"Dgpg.skip"
   deploy:
     name: Deploy Snapshot
     needs: test
