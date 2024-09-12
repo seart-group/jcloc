@@ -3,15 +3,11 @@ on:
   push:
     paths:
       - 'src/**'
-      - 'cloc/**'
       - 'pom.xml'
-      - '.gitmodules'
   pull_request:
     paths:
       - 'src/**'
-      - 'cloc/**'
       - 'pom.xml'
-      - '.gitmodules'
 
 jobs:
   lint:
