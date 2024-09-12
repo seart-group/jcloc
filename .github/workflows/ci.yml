@@ -4,6 +4,10 @@ on:
     paths:
       - 'src/**'
       - 'pom.xml'
+  pull_request_target:
+    paths:
+      - 'src/**'
+      - 'pom.xml'
 
 jobs:
   lint:
