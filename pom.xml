@@ -3,7 +3,7 @@
 
   <groupId>ch.usi.si.seart</groupId>
   <artifactId>jcloc</artifactId>
-  <version>0.2.0-SNAPSHOT</version>
+  <version>0.2.0</version>
   <packaging>jar</packaging>
 
   <name>${project.groupId}:${project.artifactId}</name>
@@ -35,7 +35,7 @@
   </developers>
 
   <scm>
-    <tag>HEAD</tag>
+    <tag>v0.2.0</tag>
     <url>https://github.com/seart-group/jcloc/tree/master</url>
     <connection>scm:git:https://github.com/seart-group/jcloc.git</connection>
     <developerConnection>scm:git:git@github.com:seart-group/jcloc.git</developerConnection>
@@ -287,20 +287,20 @@
             <configuration>
               <target>
                 <exec executable="curl" dir="${project.build.outputDirectory}">
-                  <arg value="-s"/>
-                  <arg value="-L"/>
-                  <arg value="${cloc.url}/releases/download/v${cloc.version}/cloc-${cloc.version}.exe"/>
-                  <arg value="-o"/>
-                  <arg value="cloc.exe"/>
-                  <arg value="-L"/>
-                  <arg value="${cloc.url}/releases/download/v${cloc.version}/cloc-${cloc.version}.pl"/>
-                  <arg value="-o"/>
-                  <arg value="cloc.pl"/>
+                  <arg value="-s" />
+                  <arg value="-L" />
+                  <arg value="${cloc.url}/releases/download/v${cloc.version}/cloc-${cloc.version}.exe" />
+                  <arg value="-o" />
+                  <arg value="cloc.exe" />
+                  <arg value="-L" />
+                  <arg value="${cloc.url}/releases/download/v${cloc.version}/cloc-${cloc.version}.pl" />
+                  <arg value="-o" />
+                  <arg value="cloc.pl" />
                 </exec>
                 <exec executable="chmod" dir="${project.build.outputDirectory}">
-                  <arg value="+x"/>
-                  <arg value="cloc.exe"/>
-                  <arg value="cloc.pl"/>
+                  <arg value="+x" />
+                  <arg value="cloc.exe" />
+                  <arg value="cloc.pl" />
                 </exec>
               </target>
             </configuration>
