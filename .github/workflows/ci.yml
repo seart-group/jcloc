@@ -15,7 +15,7 @@ jobs:
           - os: ubuntu-latest
             name: Linux
           - os: macos-latest
-            name: MacOS
+            name: macOS
           # TODO: Uncomment when Windows is supported
           # - os: windows-latest
           #   name: Windows
