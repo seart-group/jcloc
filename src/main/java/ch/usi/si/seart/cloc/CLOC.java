@@ -76,7 +76,7 @@ public final class CLOC {
         String protocol = Objects.requireNonNull(url).getProtocol();
         switch (protocol) {
             case "file":
-                return url.getPath();
+                return new File(url.getFile()).getPath();
             case "jar":
                 try {
                     File tmpdir = new File(TMPDIR_PATH);
