@@ -35,7 +35,6 @@ import java.util.stream.Stream;
 public final class CLOC {
 
     private static final String CMD = "cloc";
-    private static final String EXT = SystemUtils.IS_OS_WINDOWS ? "exe" : "pl";
 
     private static final String TMPDIR_PATH = System.getProperty("java.io.tmpdir");
 
@@ -71,7 +70,9 @@ public final class CLOC {
     }
 
     private static String getBundledExecutable() {
-        URL url = CLOC.class.getClassLoader().getResource(CMD + "." + EXT);
+        String extension = SystemUtils.IS_OS_WINDOWS ? "exe" : "pl";
+        String filename = String.format("%s.%s", CMD, extension);
+        URL url = CLOC.class.getClassLoader().getResource(filename);
         String protocol = Objects.requireNonNull(url).getProtocol();
         switch (protocol) {
             case "file":
