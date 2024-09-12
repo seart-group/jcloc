@@ -60,6 +60,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>8</java.version>
+    <cloc.version>2.02</cloc.version>
+    <cloc.url>https://github.com/AlDanial/cloc</cloc.url>
+    <org.apache.commons-lang.version>3.17.0</org.apache.commons-lang.version>
     <org.codehaus.plexus.version>4.0.1</org.codehaus.plexus.version>
     <org.jetbrains.annotations.version>24.1.0</org.jetbrains.annotations.version>
     <org.junit.version>5.11.0</org.junit.version>
@@ -101,6 +104,11 @@
       <artifactId>jackson-databind</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${org.apache.commons-lang.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
       <version>${org.codehaus.plexus.version}</version>
@@ -114,14 +122,6 @@
   </dependencies>
 
   <build>
-    <resources>
-      <resource>
-        <directory>${project.basedir}/cloc</directory>
-        <includes>
-          <include>cloc</include>
-        </includes>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
@@ -275,14 +275,35 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>ch.usi.si.seart</groupId>
-        <artifactId>git-submodule-maven-plugin</artifactId>
-        <version>1.1.0</version>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
         <executions>
           <execution>
+            <id>default-download-executables</id>
+            <phase>initialize</phase>
             <goals>
-              <goal>update</goal>
+              <goal>run</goal>
             </goals>
+            <configuration>
+              <target>
+                <exec executable="curl" dir="${project.build.outputDirectory}">
+                  <arg value="-s"/>
+                  <arg value="-L"/>
+                  <arg value="${cloc.url}/releases/download/v${cloc.version}/cloc-${cloc.version}.exe"/>
+                  <arg value="-o"/>
+                  <arg value="cloc.exe"/>
+                  <arg value="-L"/>
+                  <arg value="${cloc.url}/releases/download/v${cloc.version}/cloc-${cloc.version}.pl"/>
+                  <arg value="-o"/>
+                  <arg value="cloc.pl"/>
+                </exec>
+                <exec executable="chmod" dir="${project.build.outputDirectory}">
+                  <arg value="+x"/>
+                  <arg value="cloc.exe"/>
+                  <arg value="cloc.pl"/>
+                </exec>
+              </target>
+            </configuration>
           </execution>
         </executions>
       </plugin>

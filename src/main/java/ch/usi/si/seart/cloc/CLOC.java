@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.commons.lang3.SystemUtils;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.CommandLineUtils;
@@ -69,11 +70,12 @@ public final class CLOC {
     }
 
     private static String getBundledExecutable() {
-        URL url = CLOC.class.getClassLoader().getResource(CMD);
+        String extension = SystemUtils.IS_OS_WINDOWS ? "exe" : "pl";
+        URL url = CLOC.class.getClassLoader().getResource(CMD + "." + extension);
         String protocol = Objects.requireNonNull(url).getProtocol();
         switch (protocol) {
             case "file":
-                return url.getPath();
+                return new File(url.getFile()).getPath();
             case "jar":
                 try {
                     File tmpdir = new File(TMPDIR_PATH);

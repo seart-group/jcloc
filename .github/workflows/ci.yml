@@ -3,15 +3,11 @@ on:
   push:
     paths:
       - 'src/**'
-      - 'cloc/**'
       - 'pom.xml'
-      - '.gitmodules'
-  pull_request:
+  pull_request_target:
     paths:
       - 'src/**'
-      - 'cloc/**'
       - 'pom.xml'
-      - '.gitmodules'
 
 jobs:
   lint:
@@ -40,9 +36,8 @@ jobs:
             name: Linux
           - os: macos-latest
             name: macOS
-          # TODO: Uncomment when Windows is supported
-          # - os: windows-latest
-          #   name: Windows
+          - os: windows-latest
+            name: Windows
     steps:
       - name: Checkout latest
         uses: actions/checkout@v4
@@ -53,7 +48,7 @@ jobs:
           distribution: zulu
           cache: maven
       - name: Run Tests
-        run: mvn --batch-mode --update-snapshots verify -Dgpg.skip
+        run: mvn --batch-mode --update-snapshots verify -"Dgpg.skip"
   deploy:
     name: Deploy Snapshot
     needs: test
