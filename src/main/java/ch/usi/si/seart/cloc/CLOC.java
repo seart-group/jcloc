@@ -124,7 +124,7 @@ public final class CLOC {
          *
          * @param value the number of cores to use, or 0 to disable multiprocessing.
          * @return this builder instance.
-         * @throws IllegalArgumentException if the number of cores is less than 0.
+         * @throws IllegalArgumentException if the number of cores is lower than 0.
          */
         @Contract(value = "_ -> this")
         public Builder cores(int value) {
@@ -135,11 +135,11 @@ public final class CLOC {
         }
 
         /**
-         * {@code cloc} considers docstrings to be comments, but this is not always correct as docstrings represent
-         * regular strings when they appear on the right hand side of an assignment or as function arguments. This
-         * switch controls whether docstrings should be treated as code.
+         * Controls whether {@code cloc} treats docstrings as code.
+         * By default, docstrings are seen as comments,
+         * but they may also be regular strings in assignments or function arguments.
          *
-         * @param value whether docstrings should be treated as code.
+         * @param value true to treat docstrings as code, false to treat them as comments.
          * @return this builder instance.
          */
         @Contract(value = "_ -> this")
@@ -226,10 +226,10 @@ public final class CLOC {
         /**
          * Create a new command instance targeting the specified path.
          *
-         * @param path the path to target, must not be {@code null}.
+         * @param path the path to target, mustn't be {@code null}.
          * @return a new command instance targeting the specified path.
          * @throws NullPointerException if the path is {@code null}.
-         * @throws IllegalArgumentException if the path does not exist.
+         * @throws IllegalArgumentException if the path doesn't exist.
          */
         @Contract("_ -> new")
         public @NotNull CLOC target(@NotNull Path path) {
