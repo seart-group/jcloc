@@ -5,8 +5,23 @@ on:
       - '**'
 
 jobs:
+  lint:
+    name: Lint files with Checkstyle
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest
+        uses: actions/checkout@v4
+      - name: Run CheckStyle
+        uses: nikitasavinov/checkstyle-action@master
+        with:
+          level: error
+          fail_on_error: true
+          workdir: ./src
+          checkstyle_config: ./checkstyle.xml
+          github_token: ${{ secrets.GITHUB_TOKEN }}
   test:
     name: Test on ${{ matrix.name }}
+    needs: lint
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
