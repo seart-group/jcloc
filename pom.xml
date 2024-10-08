@@ -64,7 +64,7 @@
     <cloc.url>https://github.com/AlDanial/cloc</cloc.url>
     <org.apache.commons-lang.version>3.17.0</org.apache.commons-lang.version>
     <org.codehaus.plexus.version>4.0.2</org.codehaus.plexus.version>
-    <org.jetbrains.annotations.version>24.1.0</org.jetbrains.annotations.version>
+    <org.jetbrains.annotations.version>26.0.0</org.jetbrains.annotations.version>
     <org.junit.version>5.11.2</org.junit.version>
     <com.fasterxml.jackson.version>2.18.0</com.fasterxml.jackson.version>
   </properties>
