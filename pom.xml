@@ -66,7 +66,7 @@
     <org.codehaus.plexus.version>4.0.2</org.codehaus.plexus.version>
     <org.jetbrains.annotations.version>26.0.1</org.jetbrains.annotations.version>
     <org.junit.version>5.11.3</org.junit.version>
-    <com.fasterxml.jackson.version>2.18.0</com.fasterxml.jackson.version>
+    <com.fasterxml.jackson.version>2.18.1</com.fasterxml.jackson.version>
   </properties>
 
   <dependencyManagement>
