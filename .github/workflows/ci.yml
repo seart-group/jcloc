@@ -1,13 +1,11 @@
 name: CI
 on:
   push:
-    paths:
-      - 'src/**'
-      - 'pom.xml'
-  pull_request_target:
-    paths:
-      - 'src/**'
-      - 'pom.xml'
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   lint:
@@ -52,7 +50,7 @@ jobs:
   deploy:
     name: Deploy Snapshot
     needs: test
-    if: ${{ github.ref == 'refs/heads/master' }}
+    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout latest
