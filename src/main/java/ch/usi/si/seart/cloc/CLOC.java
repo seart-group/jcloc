@@ -36,8 +36,6 @@ public final class CLOC {
 
     private static final String CMD = "cloc";
 
-    private static final String TMPDIR_PATH = System.getProperty("java.io.tmpdir");
-
     private static final String EXECUTABLE = getBundledExecutable();
 
     private static final JsonMapper DEFAULT_MAPPER = new JsonMapper();
@@ -78,8 +76,7 @@ public final class CLOC {
                 return new File(url.getFile()).getPath();
             case "jar":
                 try {
-                    File tmpdir = new File(TMPDIR_PATH);
-                    File script = new File(tmpdir, CMD);
+                    File script = new File(SystemUtils.JAVA_IO_TMPDIR, CMD);
                     FileUtils.copyURLToFile(url, script);
                     boolean ignore = script.setExecutable(true);
                     script.deleteOnExit();
