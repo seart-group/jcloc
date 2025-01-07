@@ -63,7 +63,7 @@ public final class CLOC {
     /**
      * Obtain a new {@link Builder Builder} for constructing a command.
      *
-     * @return a new command builder
+     * @return a new command builder instance.
      */
     public static Builder command() {
         return new Builder();
