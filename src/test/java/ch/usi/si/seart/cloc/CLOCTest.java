@@ -79,4 +79,18 @@ class CLOCTest {
         Assertions.assertEquals(files.size(), header.get("n_files").asInt());
         Assertions.assertEquals(files.size() + 2, result.size());
     }
+
+    @Test
+    void testGetURL() {
+        String url = CLOC.getURL();
+        Assertions.assertNotNull(url, "URL should not be null.");
+        Assertions.assertFalse(url.isEmpty(), "URL should not be empty.");
+    }
+
+    @Test
+    void testGetVersion() {
+        String version = CLOC.getVersion();
+        Assertions.assertNotNull(version, "Version should not be null.");
+        Assertions.assertFalse(version.isEmpty(), "Version should not be empty.");
+    }
 }

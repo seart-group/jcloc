@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -22,6 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -47,6 +49,39 @@ public final class CLOC {
     private CLOC(CommandLine commandLine, int timeout) {
         this.commandLine = commandLine;
         this.timeout = timeout;
+    }
+
+    private static volatile Properties properties;
+
+    private static Properties properties() {
+        if (properties == null) {
+            synchronized (CLOC.class) {
+                if (properties == null) {
+                    properties = new Properties();
+                    try (InputStream stream = CLOC.class.getClassLoader().getResourceAsStream("cloc.properties")) {
+                        properties.load(stream);
+                    } catch (IOException ignored) {
+                    }
+                }
+            }
+        }
+        return properties;
+    }
+
+    /**
+     * @return the {@code cloc} repository link, or {@code null} if the details could not be loaded.
+     */
+    @Nullable
+    public static String getURL() {
+        return properties().getProperty("cloc.url");
+    }
+
+    /**
+     * @return the {@code cloc} command version, or {@code null} if the details could not be loaded.
+     */
+    @Nullable
+    public static String getVersion() {
+        return properties().getProperty("cloc.version");
     }
 
     /**
