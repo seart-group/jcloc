@@ -78,9 +78,13 @@ public final class CLOC {
                 try {
                     File script = new File(SystemUtils.JAVA_IO_TMPDIR, CMD);
                     FileUtils.copyURLToFile(url, script);
-                    boolean ignore = script.setExecutable(true);
-                    script.deleteOnExit();
-                    return script.getAbsolutePath();
+                    boolean success = script.setExecutable(true);
+                    if (success) {
+                        script.deleteOnExit();
+                        return script.getAbsolutePath();
+                    } else {
+                        throw new IOException("Unable change execute permissions: " + script.getAbsolutePath());
+                    }
                 } catch (IOException ex) {
                     throw new UncheckedIOException(ex);
                 }
