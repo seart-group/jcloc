@@ -14,8 +14,12 @@ following dependency in your Maven project:
 ## Requirements
 
 This library requires a minimum of Java 8. You don't need to have `cloc` installed on your system, as the JAR comes
-bundled with the necessary script. Since it is written in Perl, it should be executable out of the box on most systems
-(as the majority of Unix-like systems have it installed by default).
+bundled with the necessary script.
+
+> [!NOTE]  
+> Since this script is written in Perl, you must make sure that its interpreter is installed and located on your `PATH`.
+> Should work out of the box on most systems (as the majority of Unix-like systems have it installed by default),
+> but worth pointing out in case you plan on using this on a minimalistic Linux image or Windows.
 
 ## Example
 

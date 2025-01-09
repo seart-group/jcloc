@@ -93,4 +93,11 @@ class CLOCTest {
         Assertions.assertNotNull(version, "Version should not be null.");
         Assertions.assertFalse(version.isEmpty(), "Version should not be empty.");
     }
+
+    @Test
+    void testGetMD5() {
+        String md5 = CLOC.getMD5();
+        Assertions.assertNotNull(md5, "MD5 should not be null.");
+        Assertions.assertFalse(md5.isEmpty(), "MD5 should not be empty.");
+    }
 }

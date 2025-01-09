@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -35,10 +36,6 @@ import java.util.stream.Stream;
  * @author Ozren Dabić
  */
 public final class CLOC {
-
-    private static final String CMD = "cloc";
-
-    private static final String EXECUTABLE = getBundledExecutable();
 
     private static final JsonMapper DEFAULT_MAPPER = new JsonMapper();
     private static volatile JsonMapper OUTPUT_MAPPER = DEFAULT_MAPPER;
@@ -67,6 +64,46 @@ public final class CLOC {
         return PROPERTIES;
     }
 
+    private static volatile File EXECUTABLE;
+    private static File getExecutable() {
+        if (EXECUTABLE == null) {
+            synchronized (CLOC.class) {
+                if (EXECUTABLE == null) {
+                    URL url = CLOC.class.getClassLoader().getResource("cloc.pl");
+                    String protocol = Objects.requireNonNull(url).getProtocol();
+                    switch (protocol) {
+                        case "file":
+                            String path = url.getPath();
+                            EXECUTABLE = new File(path);
+                            break;
+                        case "jar":
+                            try {
+                                File script = new File(SystemUtils.USER_HOME, "cloc.pl");
+                                if (getMD5() != null && script.exists() && MD5.hash(script).equals(getMD5())) {
+                                    EXECUTABLE = script;
+                                    break;
+                                }
+                                FileUtils.copyURLToFile(url, script);
+                                boolean success = script.setExecutable(true);
+                                if (success) {
+                                    EXECUTABLE = script;
+                                    break;
+                                }
+                                throw new IOException("Unable change execute permissions: " + script);
+                            } catch (IOException ex) {
+                                throw new UncheckedIOException(ex);
+                            } catch (NoSuchAlgorithmException ex) {
+                                throw new IllegalStateException(ex);
+                            }
+                        default:
+                            throw new UnsupportedOperationException("Unsupported protocol: " + protocol);
+                    }
+                }
+            }
+        }
+        return EXECUTABLE;
+    }
+
     /**
      * @return the {@code cloc} repository link, or {@code null} if the details could not be loaded.
      */
@@ -81,6 +118,14 @@ public final class CLOC {
     @Nullable
     public static String getVersion() {
         return getProperties().getProperty("cloc.version");
+    }
+
+    /**
+     * @return the {@code cloc} executable MD5 checksum, or {@code null} if the details could not be loaded.
+     */
+    @Nullable
+    public static String getMD5() {
+        return getProperties().getProperty("cloc.md5");
     }
 
     /**
@@ -99,32 +144,6 @@ public final class CLOC {
      */
     public static Builder command() {
         return new Builder();
-    }
-
-    private static String getBundledExecutable() {
-        String extension = SystemUtils.IS_OS_WINDOWS ? "exe" : "pl";
-        URL url = CLOC.class.getClassLoader().getResource(CMD + "." + extension);
-        String protocol = Objects.requireNonNull(url).getProtocol();
-        switch (protocol) {
-            case "file":
-                return new File(url.getFile()).getPath();
-            case "jar":
-                try {
-                    File script = new File(SystemUtils.JAVA_IO_TMPDIR, CMD);
-                    FileUtils.copyURLToFile(url, script);
-                    boolean success = script.setExecutable(true);
-                    if (success) {
-                        script.deleteOnExit();
-                        return script.getAbsolutePath();
-                    } else {
-                        throw new IOException("Unable change execute permissions: " + script.getAbsolutePath());
-                    }
-                } catch (IOException ex) {
-                    throw new UncheckedIOException(ex);
-                }
-            default:
-                throw new UnsupportedOperationException("Unsupported protocol: " + protocol);
-        }
     }
 
     /**
@@ -270,12 +289,13 @@ public final class CLOC {
          */
         @Contract("_ -> new")
         public @NotNull CLOC target(@NotNull Path path) {
-            Objects.requireNonNull(path, "Path must not be null!");
-            File file = path.toFile();
+            File executable = getExecutable();
+            File file = Objects.requireNonNull(path, "Path must not be null!").toFile();
             if (!file.exists()) throw new IllegalArgumentException("Unable to read: " + path);
 
             CommandLine commandLine = new CommandLine();
-            commandLine.setExecutable(EXECUTABLE);
+            commandLine.createArg("perl");
+            commandLine.createArg().setFile(executable);
             commandLine.createArg().setFile(file);
             flags.stream()
                     .map(flag -> "--" + flag)
