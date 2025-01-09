@@ -3,7 +3,7 @@
 
   <groupId>ch.usi.si.seart</groupId>
   <artifactId>jcloc</artifactId>
-  <version>0.3.0-SNAPSHOT</version>
+  <version>0.3.0</version>
   <packaging>jar</packaging>
 
   <name>${project.groupId}:${project.artifactId}</name>
@@ -35,7 +35,7 @@
   </developers>
 
   <scm>
-    <tag>v0.2.0</tag>
+    <tag>v0.3.0</tag>
     <url>https://github.com/seart-group/jcloc/tree/master</url>
     <connection>scm:git:https://github.com/seart-group/jcloc.git</connection>
     <developerConnection>scm:git:git@github.com:seart-group/jcloc.git</developerConnection>
