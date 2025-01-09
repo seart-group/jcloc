@@ -300,18 +300,6 @@
               <md5>31533dd445610364154ec328bfcf7b2c</md5>
             </configuration>
           </execution>
-          <execution>
-            <id>default-download-exe</id>
-            <phase>initialize</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>${cloc.url}/releases/download/v${cloc.version}/cloc-${cloc.version}.exe</url>
-              <outputFileName>cloc.exe</outputFileName>
-              <md5>31adac93c8d3c9e4d67912a8f9f5b729</md5>
-            </configuration>
-          </execution>
         </executions>
         <configuration>
           <outputDirectory>${project.build.outputDirectory}</outputDirectory>
