@@ -84,6 +84,14 @@ public final class CLOC {
     }
 
     /**
+     * @return the {@code cloc} executable MD5 checksum, or {@code null} if the details could not be loaded.
+     */
+    @Nullable
+    public static String getMD5() {
+        return getProperties().getProperty("cloc.md5");
+    }
+
+    /**
      * Set the {@link JsonMapper} to use for parsing the output of the command.
      *
      * @param mapper the mapper to use, or {@code null} to revert to the default instance.
