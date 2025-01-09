@@ -52,7 +52,7 @@ public final class CLOC {
     }
 
     private static volatile Properties PROPERTIES;
-    private static Properties properties() {
+    private static Properties getProperties() {
         if (PROPERTIES == null) {
             synchronized (CLOC.class) {
                 if (PROPERTIES == null) {
@@ -72,7 +72,7 @@ public final class CLOC {
      */
     @Nullable
     public static String getURL() {
-        return properties().getProperty("cloc.url");
+        return getProperties().getProperty("cloc.url");
     }
 
     /**
@@ -80,7 +80,7 @@ public final class CLOC {
      */
     @Nullable
     public static String getVersion() {
-        return properties().getProperty("cloc.version");
+        return getProperties().getProperty("cloc.version");
     }
 
     /**
