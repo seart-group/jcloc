@@ -78,7 +78,7 @@ public final class CLOC {
                             break;
                         case "jar":
                             try {
-                                File script = new File(SystemUtils.JAVA_IO_TMPDIR, "cloc.pl");
+                                File script = new File(SystemUtils.USER_HOME, "cloc.pl");
                                 if (getMD5() != null && script.exists() && MD5.hash(script).equals(getMD5())) {
                                     EXECUTABLE = script;
                                     break;
