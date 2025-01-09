@@ -37,8 +37,6 @@ import java.util.stream.Stream;
  */
 public final class CLOC {
 
-    private static final File EXECUTABLE = getExecutable();
-
     private static final JsonMapper DEFAULT_MAPPER = new JsonMapper();
     private static volatile JsonMapper OUTPUT_MAPPER = DEFAULT_MAPPER;
 
@@ -64,6 +62,46 @@ public final class CLOC {
             }
         }
         return PROPERTIES;
+    }
+
+    private static volatile File EXECUTABLE;
+    private static File getExecutable() {
+        if (EXECUTABLE == null) {
+            synchronized (CLOC.class) {
+                if (EXECUTABLE == null) {
+                    URL url = CLOC.class.getClassLoader().getResource("cloc.pl");
+                    String protocol = Objects.requireNonNull(url).getProtocol();
+                    switch (protocol) {
+                        case "file":
+                            String path = url.getPath();
+                            EXECUTABLE = new File(path);
+                            break;
+                        case "jar":
+                            try {
+                                File script = new File(SystemUtils.JAVA_IO_TMPDIR, "cloc.pl");
+                                if (getMD5() != null && script.exists() && MD5.hash(script).equals(getMD5())) {
+                                    EXECUTABLE = script;
+                                    break;
+                                }
+                                FileUtils.copyURLToFile(url, script);
+                                boolean success = script.setExecutable(true);
+                                if (success) {
+                                    EXECUTABLE = script;
+                                    break;
+                                }
+                                throw new IOException("Unable change execute permissions: " + script);
+                            } catch (IOException ex) {
+                                throw new UncheckedIOException(ex);
+                            } catch (NoSuchAlgorithmException ex) {
+                                throw new IllegalStateException(ex);
+                            }
+                        default:
+                            throw new UnsupportedOperationException("Unsupported protocol: " + protocol);
+                    }
+                }
+            }
+        }
+        return EXECUTABLE;
     }
 
     /**
@@ -106,31 +144,6 @@ public final class CLOC {
      */
     public static Builder command() {
         return new Builder();
-    }
-
-    private static File getExecutable() {
-        URL url = CLOC.class.getClassLoader().getResource("cloc.pl");
-        String protocol = Objects.requireNonNull(url).getProtocol();
-        switch (protocol) {
-            case "file":
-                String path = url.getPath();
-                return new File(path);
-            case "jar":
-                try {
-                    File script = new File(SystemUtils.JAVA_IO_TMPDIR, "cloc.pl");
-                    if (getMD5() != null && script.exists() && MD5.hash(script).equals(getMD5())) return script;
-                    FileUtils.copyURLToFile(url, script);
-                    boolean success = script.setExecutable(true);
-                    if (!success) throw new IOException("Unable change execute permissions: " + script);
-                    return script;
-                } catch (IOException ex) {
-                    throw new UncheckedIOException(ex);
-                } catch (NoSuchAlgorithmException ex) {
-                    throw new IllegalStateException(ex);
-                }
-            default:
-                throw new UnsupportedOperationException("Unsupported protocol: " + protocol);
-        }
     }
 
     /**
@@ -276,13 +289,13 @@ public final class CLOC {
          */
         @Contract("_ -> new")
         public @NotNull CLOC target(@NotNull Path path) {
-            Objects.requireNonNull(path, "Path must not be null!");
-            File file = path.toFile();
+            File executable = getExecutable();
+            File file = Objects.requireNonNull(path, "Path must not be null!").toFile();
             if (!file.exists()) throw new IllegalArgumentException("Unable to read: " + path);
 
             CommandLine commandLine = new CommandLine();
             commandLine.createArg("perl");
-            commandLine.createArg().setFile(EXECUTABLE);
+            commandLine.createArg().setFile(executable);
             commandLine.createArg().setFile(file);
             flags.stream()
                     .map(flag -> "--" + flag)
