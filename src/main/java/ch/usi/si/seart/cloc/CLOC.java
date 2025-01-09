@@ -51,21 +51,20 @@ public final class CLOC {
         this.timeout = timeout;
     }
 
-    private static volatile Properties properties;
-
+    private static volatile Properties PROPERTIES;
     private static Properties properties() {
-        if (properties == null) {
+        if (PROPERTIES == null) {
             synchronized (CLOC.class) {
-                if (properties == null) {
-                    properties = new Properties();
+                if (PROPERTIES == null) {
+                    PROPERTIES = new Properties();
                     try (InputStream stream = CLOC.class.getClassLoader().getResourceAsStream("cloc.properties")) {
-                        properties.load(stream);
+                        PROPERTIES.load(stream);
                     } catch (IOException ignored) {
                     }
                 }
             }
         }
-        return properties;
+        return PROPERTIES;
     }
 
     /**
