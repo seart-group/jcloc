@@ -14,6 +14,8 @@
     <property name="optional" value="true"/>
   </module>
 
+  <module name="SuppressWarningsFilter"/>
+
   <module name="FileTabCharacter"/>
   <module name="NewlineAtEndOfFile"/>
 
@@ -30,6 +32,8 @@
   </module>
 
   <module name="TreeWalker">
+
+    <module name="SuppressWarningsHolder"/>
 
     <module name="AvoidStarImport"/>
     <module name="IllegalImport"/>
