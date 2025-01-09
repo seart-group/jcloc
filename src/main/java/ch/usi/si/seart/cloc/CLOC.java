@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -36,9 +37,7 @@ import java.util.stream.Stream;
  */
 public final class CLOC {
 
-    private static final String CMD = "cloc";
-
-    private static final String EXECUTABLE = getBundledExecutable();
+    private static final File EXECUTABLE = getExecutable();
 
     private static final JsonMapper DEFAULT_MAPPER = new JsonMapper();
     private static volatile JsonMapper OUTPUT_MAPPER = DEFAULT_MAPPER;
@@ -109,26 +108,25 @@ public final class CLOC {
         return new Builder();
     }
 
-    private static String getBundledExecutable() {
-        String extension = SystemUtils.IS_OS_WINDOWS ? "exe" : "pl";
-        URL url = CLOC.class.getClassLoader().getResource(CMD + "." + extension);
+    private static File getExecutable() {
+        URL url = CLOC.class.getClassLoader().getResource("cloc.pl");
         String protocol = Objects.requireNonNull(url).getProtocol();
         switch (protocol) {
             case "file":
-                return new File(url.getFile()).getPath();
+                String path = url.getPath();
+                return new File(path);
             case "jar":
                 try {
-                    File script = new File(SystemUtils.JAVA_IO_TMPDIR, CMD);
+                    File script = new File(SystemUtils.JAVA_IO_TMPDIR, "cloc.pl");
+                    if (getMD5() != null && script.exists() && MD5.hash(script).equals(getMD5())) return script;
                     FileUtils.copyURLToFile(url, script);
                     boolean success = script.setExecutable(true);
-                    if (success) {
-                        script.deleteOnExit();
-                        return script.getAbsolutePath();
-                    } else {
-                        throw new IOException("Unable change execute permissions: " + script.getAbsolutePath());
-                    }
+                    if (!success) throw new IOException("Unable change execute permissions: " + script);
+                    return script;
                 } catch (IOException ex) {
                     throw new UncheckedIOException(ex);
+                } catch (NoSuchAlgorithmException ex) {
+                    throw new IllegalStateException(ex);
                 }
             default:
                 throw new UnsupportedOperationException("Unsupported protocol: " + protocol);
@@ -283,7 +281,8 @@ public final class CLOC {
             if (!file.exists()) throw new IllegalArgumentException("Unable to read: " + path);
 
             CommandLine commandLine = new CommandLine();
-            commandLine.setExecutable(EXECUTABLE);
+            commandLine.createArg("perl");
+            commandLine.createArg().setFile(EXECUTABLE);
             commandLine.createArg().setFile(file);
             flags.stream()
                     .map(flag -> "--" + flag)
