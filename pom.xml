@@ -63,7 +63,7 @@
     <cloc.version>2.02</cloc.version>
     <cloc.url>https://github.com/AlDanial/cloc</cloc.url>
     <cloc.md5>31533dd445610364154ec328bfcf7b2c</cloc.md5>
-    <org.apache.commons-lang.version>3.19.0</org.apache.commons-lang.version>
+    <org.apache.commons-lang.version>3.20.0</org.apache.commons-lang.version>
     <org.codehaus.plexus.version>4.0.2</org.codehaus.plexus.version>
     <org.jetbrains.annotations.version>26.0.2-1</org.jetbrains.annotations.version>
     <org.junit.version>5.13.4</org.junit.version>
