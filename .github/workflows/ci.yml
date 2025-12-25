@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout latest
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Run CheckStyle
         uses: nikitasavinov/checkstyle-action@master
         with:
@@ -38,7 +38,7 @@ jobs:
             name: Windows
     steps:
       - name: Checkout latest
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Perl
         uses: shogo82148/actions-setup-perl@v1.37.0
       - name: Set up JDK 8
@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout latest
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Perl
         uses: shogo82148/actions-setup-perl@v1.37.0
       - name: Set up JDK 8
